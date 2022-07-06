@@ -24,7 +24,8 @@ def oracle_init():
 def connect():
     try:
         conn = cx_Oracle.connect(dbUSER, dbPASSWD, dbURL)
-        conn.autocommit(False) # 자동 커밋 해제
+        conn.autocommit = False # 자동 커밋 해제
+        #print(conn)
         return conn
     except Exception as msg:
         print("오라클 연결 에러 : ", msg)

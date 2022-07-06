@@ -28,3 +28,4 @@ def display():
             return
         else:
             print("번호가 잘못 입력되었습니다.")
+

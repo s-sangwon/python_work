@@ -20,7 +20,7 @@ def select_all():
     conn = oradb.connect()
     query = "select * from employee"
     result = []
-    cursor = ''
+    #cursor = None
     try:
         # c##student.employee 테이블 전체 조회해 와서,
         # result 에 결과 담기
@@ -29,24 +29,149 @@ def select_all():
         result = cursor.fetchall()
     except Exception as msg:
         print("select_all() 쿼리 실행 에러 : ", msg)
+        return result # 빈 리스트가 리턴됨
     finally:
         cursor.close()
         oradb.close(conn)
 
     return result
 
+def select_one(tp_value):
+    conn = oradb.connect()
+    query = "select * from employee where emp_id=:1"
+    result = ()
+    # cursor = None
+    try:
+        # c##student.employee 테이블 사번에 해당하는,
+        # 직원 조회해서 result 에 결과 담기
+        cursor = conn.cursor()
+        cursor.execute(query, tp_value)
+        result = cursor.fetchone()
+    except Exception as msg:
+        print("select_one() 쿼리 실행 에러 : ", msg)
+        return result
+    finally:
+        cursor.close()
+        oradb.close(conn)
+
+    return result
+
+
+
+def insert(tp_value):
+    conn = oradb.connect()
+    query = "insert into employee values (seq_eid.nextval, \
+            :1, :2, :3, :4, default, :5, :6, :7, :8, :9, :10)"
+    cursor = ''
+    try:
+        # c##student.employee 테이블에 새 행 추가 처리
+        cursor = conn.cursor()
+        cursor.execute(query, tp_value)
+        oradb.commit(conn)
+    except Exception as msg:
+        print("insert() 쿼리 실행 에러 : ", msg)
+        conn.rollback()
+    finally:
+        cursor.close()
+        oradb.close(conn)
+
+
+def update(tp_value):
+    conn = oradb.connect()
+    query = "update employee set email=:1, phone = :2,  \
+            job_id = :3, dept_id = :4, salary = :5, \
+            bonus_pct = :6, marriage = :7, mgr_id= :8 " \
+            "where emp_id = :9"
+    cursor = ''
+    try:
+        # c##student.employee 테이블 직원 정보 수정 처리
+        cursor = conn.cursor()
+        cursor.execute(query, tp_value)
+        oradb.commit(conn)
+    except Exception as msg:
+        print("update() 쿼리 실행 에러 : ", msg)
+        conn.rollback()
+        return
+    finally:
+        cursor.close()
+        oradb.close(conn)
+
+
 # 사번으로 직원 삭제 처리용 함수
 def delete(tp_value):
-    pass
+    conn = oradb.connect()
+    query = "delete from employee where emp_id=:1"
+    try:
+        # c##student.employee 테이블 직원 정보 삭제 처리
+        cursor = conn.cursor()
+        cursor.execute(query, tp_value)
+        oradb.commit(conn)
+    except Exception as msg:
+        print("delete() 쿼리 실행 에러 : ", msg)
+        conn.rollback()
+        return
+    finally:
+        cursor.close()
+        oradb.close(conn)
+    return
 
 # 이름으로 검색 처리용 함수
 def select_search_name(tp_value):
-    pass
+    conn = oradb.connect()
+    query = "select * from employee " \
+            "where emp_name like '%'||:1||'%'"
+    result = []
+    cursor = ''
+    try:
+        # c##student.employee 테이블 이름에 해당되는
+        # 직원들 조회해 와서, result 에 결과 담기
+        cursor = conn.cursor()
+        cursor.execute(query, tp_value)
+        result = cursor.fetchall()
+    except Exception as msg:
+        print("select_search_name() 쿼리 실행 에러 : ", msg)
+    finally:
+        cursor.close()
+        oradb.close(conn)
+
+    return result
 
 # 직급으로 검색 처리용 함수
 def select_search_job(tp_value):
-    pass
+    conn = oradb.connect()
+    query = "select * from employee where job_id= :1 "
+    result = []
+    cursor = ''
+    try:
+        # c##student.employee 테이블 직급으로 직원들 조회해 와서,
+        # result 에 결과 담기
+        cursor = conn.cursor()
+        cursor.execute(query, tp_value)
+        result = cursor.fetchall()
+    except Exception as msg:
+        print("select_search_job() 쿼리 실행 에러 : ", msg)
+    finally:
+        cursor.close()
+        oradb.close(conn)
+
+    return result
 
 # 직급으로 검색 처리용 함수
-def select_search_dept(tp_value):
-    pass
+def select_search_deptid(tp_value):
+    conn = oradb.connect()
+    query = "select * from employee where dept_id = :1"
+    result = []
+    cursor = ''
+    try:
+        # c##student.employee 테이블 부서에 해당하는
+        # 직웓늘 조회해 와서, result 에 결과 담기
+        cursor = conn.cursor()
+        cursor.execute(query, tp_value)
+        result = cursor.fetchall()
+    except Exception as msg:
+        print("select_search_deptid() 쿼리 실행 에러 : ", msg)
+    finally:
+        cursor.close()
+        oradb.close(conn)
+
+    return result
