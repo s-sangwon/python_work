@@ -183,8 +183,9 @@ def run():
                     str += li2.text
                 driver.close()
                 driver.switch_to.window(driver.window_handles[0])
-
                 tour_obj.set_content(str)
+
+
                 print('객체 값 확인 : ', tour_obj)
                 tour_list.append(tour_obj)
 
